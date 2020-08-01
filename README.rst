@@ -1,13 +1,14 @@
 Support for partial content in Django staticfiles.
 
 After an installation add the following app to your settings.
-```
-INSTALLED_APPS = [
-    ...
-    'django-partial-content',
-    ...
-]
-```
+
+.. code-block:: python
+
+    INSTALLED_APPS = [
+        ...
+        'django-partial-content',
+        ...
+    ]
 
 After that Django will respect `Range` header in requests to static files. Note that using `staticfiles` module in production is not recommended. The extension is only for ease of development.
 
