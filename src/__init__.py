@@ -1,5 +1,3 @@
-from django.http import HttpRequest, HttpResponse
-
 import django.views.static
 
 import re
@@ -19,7 +17,7 @@ def handler(request, *args, **kwargs):
 django.views.static.serve = handler
 
 
-def handle(request: HttpRequest, response: HttpResponse):
+def handle(request, response):
     if request.META.get('HTTP_RANGE') and response.status_code == 200:
         header = request.META['HTTP_RANGE']
         if header.find('bytes=') == 0:
