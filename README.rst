@@ -15,8 +15,7 @@ After an installation add the following app to your settings.
 
 After that Django will respect `Range` header in requests to static files. Note that using `staticfiles` module in production is not recommended. The extension is only for ease of development.
 
-Tested with Django (2.0, 3.0), SRWare Iron and files no larger than 40MB.
+Tested with Django (2.0, 3.0) and SRWare Iron.
 
 Known issues:
  - Multiple ranges aren't supported.
- - Big files aren't supported yet.

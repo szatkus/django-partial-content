@@ -23,7 +23,7 @@ def test_big_file():
     value = response.getvalue()
     assert len(value) == src.LIMIT
     assert value[335397] == 98
-    assert response.get('Content-Range') == 'bytes 4-' + str(src.LIMIT + 3) + '/2608290'
+    assert response.get('Content-Range') == 'bytes 4-' + str(src.LIMIT + 3) + '/15920290'
 
 
 def test_other_request():

@@ -4,8 +4,9 @@ import django.views.static
 
 import re
 import io
+import os
 
-LIMIT = 1024 ** 2
+LIMIT = 10 * 1024 ** 2
 
 
 serve_func = django.views.static.serve
@@ -26,12 +27,17 @@ def handle(request: HttpRequest, response: HttpResponse):
             parts = splitter.split(header[6:].strip())
             start = int(parts[0])
             end = int(parts[1]) + 1 if parts[1] else start + LIMIT
-            content = response.getvalue()
-            if end > len(content):
-                end = len(content)
-            response._set_streaming_content(io.BufferedReader(io.BytesIO(content[start:end])))
-            response._headers['content-length'] = 'Content-Length', str(end - start)
-            response._headers['content-range'] = 'Content-Range', 'bytes %d-%d/%d' % (start, end - 1, len(content))
+            content_reader = response.file_to_stream
+            content_reader.seek(0, os.SEEK_END)
+            total_size = content_reader.tell()
+            if end > total_size:
+                end = total_size
+            content_reader.seek(start)
+            content_length = end - start
+            content = content_reader.read(content_length)
+            response._set_streaming_content(io.BufferedReader(io.BytesIO(content)))
+            response._headers['content-length'] = 'Content-Length', str(content_length)
+            response._headers['content-range'] = 'Content-Range', 'bytes %d-%d/%d' % (start, end - 1, total_size)
             response.status_code = 206
 
     return response
